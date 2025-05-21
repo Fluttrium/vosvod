@@ -1,97 +1,120 @@
 'use client'
 
-import React from "react";
-import Image from "next/image";
-import { FlipWords } from "./ui/flip-words";
-import { motion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { FlipWords } from './ui/flip-words'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export const Hero = () => {
   const content = {
-    title: "Получить права на",
-    words: ["катер", "лодку", "гидроцикл", "водолаза"],
-    subtitle: "в Санкт-Петербурге",
-    address: "ул. Декабристов д.32/2 (Театральная площадь д.2)",
-    phone: "+7 (931) 978-73-78",
-  };
+    title: 'Получите права на',
+    words: ['катер', 'лодку', 'гидроцикл', 'водолаза'],
+    description:
+      'Подготовим к экзамену в ГИМС — обучение от лицензированного учебного центра в Санкт-Петербурге',
+    buttonText: 'Записаться на курс',
+    images: [
+      '/Rectangle.png',
+      '/-ГИМС-2-e1691746586214.jpeg',
+      '/-ГИМС-3-e1691746560117.jpeg',
+      '/-ГИМС-1-e1691746637981.jpeg',
+    ],
+  }
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % content.images.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <section className="relative w-full h-screen pt-20 flex items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-20 w-full max-w-7xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl p-10 lg:p-16 flex flex-col lg:flex-row gap-12 items-center"
-      >
-        {/* Левая часть — заголовок и контакты */}
-        <div className="w-full lg:w-2/3 flex flex-col items-center text-center">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-6 drop-shadow-[0_4px_6px_rgba(0,0,0,0.7)]">
-            {content.title}
-            <br />
-            <span className="relative inline-block">
-              <span className="absolute inset-0 bg-blue-500/30 blur-xl rounded-full" />
-              <span className="relative text-blue-400">
-                <FlipWords
-                  words={content.words}
-                  duration={3000}
-                  className="font-extrabold tracking-tight"
-                />
-              </span>
-            </span>
-          </h1>
+    <section className="w-full min-h-[700px] sm:min-h-[500px] lg:h-[82vh] flex flex-col lg:flex-row relative overflow-hidden bg-[#005bbb]/10">
+      {/* Стилизованные круги */}
+      <div className="absolute -top-32 -left-32 w-[300px] h-[300px] bg-[#005bbb] opacity-20 rounded-full blur-[100px] z-0" />
+      <div className="absolute top-1/2 left-12 w-[200px] h-[200px] bg-[#ffd500] opacity-20 rounded-full blur-[80px] z-0" />
 
-          <p className="text-2xl sm:text-3xl md:text-4xl text-white font-bold mb-10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-            {content.subtitle}
-          </p>
-
-          <div className="bg-black/60 backdrop-blur-lg rounded-xl p-8 border border-white/30 shadow-2xl w-full max-w-lg">
-            <div className="text-white text-center">
-              <div className="flex items-center justify-center gap-4 mb-6">
-                <div className="h-[2px] w-16 bg-white/40 flex-1" />
-                <span className="text-lg uppercase tracking-widest font-medium text-white/90">
-                  Контакты
-                </span>
-                <div className="h-[2px] w-16 bg-white/40 flex-1" />
-              </div>
-
-              <p className="text-2xl font-bold mb-2 text-white">Санкт-Петербург</p>
-              <p className="text-gray-200 text-lg mb-6 font-medium">{content.address}</p>
-
-              <a
-                href={`tel:${content.phone.replace(/\D/g, '')}`}
-                className="inline-flex items-center justify-center gap-3 text-3xl font-extrabold text-white hover:text-blue-300 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
-              >
-                <Phone className="w-7 h-7 stroke-2" />
-                {content.phone}
-              </a>
+      {/* Левая часть */}
+      <div className="w-full lg:w-1/2 h-auto lg:h-full relative z-10">
+        <div className="w-full h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 md:px-12 lg:px-24 py-10 bg-white shadow-[0px_10px_60px_-15px_rgba(0,91,187,0.5)] relative z-10">
+          {/* Карточки */}
+          <div className="flex flex-wrap justify-center gap-4 mb-6 z-10">
+            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-blue-500/30 bg-white/20 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,91,187,0.2)] hover:shadow-[0_0_20px_rgba(0,91,187,0.5)] transition-shadow duration-300">
+              <Image
+                src="/регистр.png"
+                alt="регистр"
+                width={256}
+                height={256}
+                quality={100}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-blue-500/30 bg-white/20 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,91,187,0.2)] hover:shadow-[0_0_20px_rgba(0,91,187,0.5)] transition-shadow duration-300">
+              <Image
+                src="/image.png"
+                alt="эмблема"
+                width={256}
+                height={256}
+                quality={100}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
-        </div>
 
-        {/* Правая часть — эмблемы */}
-        <div className="w-full lg:w-1/3 flex flex-col gap-6 items-center">
-          <div className="w-full max-w-xs">
-            <Image
-              src="/регистр.png"
-              alt="Регистр"
-              width={400}
-              height={200}
-              className="rounded-xl w-full h-auto object-cover"
-              priority
-            />
-          </div>
-          <div className="w-full max-w-xs">
-            <Image
-              src="/image.png"
-              alt="Эмблема"
-              width={400}
-              height={200}
-              className="rounded-xl w-full h-auto object-cover"
-              priority
-            />
-          </div>
+          {/* Заголовок и текст */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4 z-10">
+            {content.title}{' '}
+            <span className="text-blue-600">
+              <FlipWords
+                words={content.words}
+                duration={2500}
+                className="inline-block font-bold"
+              />
+            </span>
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 z-10">
+            {content.description}
+          </p>
+          <button className="mx-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-full w-fit transition z-10">
+            {content.buttonText}
+          </button>
         </div>
-      </motion.div>
+      </div>
+
+      {/* Правая часть — мобилка: статика, десктоп: слайдер */}
+      <div className="block lg:hidden w-full h-[50vh] relative z-0">
+  <Image
+    src={content.images[0]}
+    alt="Изображение курса"
+    fill
+    quality={100}
+    className="object-cover"
+  />
+  <div className="absolute inset-0 bg-black/20" />
+</div>
+      <div className="hidden lg:block w-full lg:w-1/2 h-full relative overflow-hidden z-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={content.images[currentImageIndex]}
+              alt="Картинка курса"
+              fill
+              quality={100}
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/20" />
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </section>
-  );
-};
+  )
+}

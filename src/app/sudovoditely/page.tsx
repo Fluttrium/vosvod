@@ -105,8 +105,14 @@ export default function ManagementPage() {
             Объекты инфраструктуры: <strong>нет</strong>
           </p>
         </section>
-
-        <GalleryBlock images={[]} />
+        <GalleryBlock
+          images={[
+            '/Техника/1.jpg',
+            '/Техника/2.jpg',
+            '/Техника/3.jpg',
+            '/Техника/4.jpg'
+          ]}
+        />
         <WhyVOSVOD />
       </div>
     </div>

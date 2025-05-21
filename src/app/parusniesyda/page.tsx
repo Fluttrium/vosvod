@@ -127,13 +127,13 @@ const SailingCoursePage = () => {
         </section>
 
         <GalleryBlock
-  images={[
-    '/Парусный/img_3770.jpg',
-    '/Парусный/img_3742.jpg',
-    '/Парусный/sb6fmuqzdh0-768x432.jpg',
-    '/Парусный/vixjlzlb6fi-768x513.jpg',
-  ]}
-/>
+          images={[
+            '/Техника/1.jpg',
+            '/Техника/2.jpg',
+            '/Техника/3.jpg',
+            '/Техника/4.jpg'
+          ]}
+        />
 <section className="bg-white p-6 rounded-2xl shadow-md mt-10">
   <h3 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
     Видеообзор обучения

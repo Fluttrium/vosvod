@@ -1,180 +1,269 @@
 'use client'
 
-import Link from "next/link"
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { Container } from './ui/container'
-import Image from 'next/image'
-import { useRouter, usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "./ui/button"
-import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, X, ChevronDown, ChevronUp, Phone, MapPin } from 'lucide-react'
 
-export const Header = () => {
-  const router = useRouter()
+const MobileAccordion = ({
+  label,
+  items,
+  onClick,
+}: {
+  label: string
+  items: { name: string; path: string }[]
+  onClick: () => void
+}) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="px-2">
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="w-full flex items-center justify-between text-sm font-medium py-2"
+      >
+        {label}
+        {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+      </button>
+      {open && (
+        <div className="flex flex-col gap-1 mt-1">
+          {items.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              onClick={onClick}
+              className="pl-4 pr-2 py-1 text-sm hover:bg-blue-50 rounded-md transition"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const pathname = usePathname()
-  const [isScrolled, setIsScrolled] = useState(false)
+  const router = useRouter()
   const [openMenu, setOpenMenu] = useState<'education' | 'organization' | null>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const navItems = [
-    { name: "Информация", path: "/information" },
-    { name: "Версия для слабовидящих", path: "/accessibility" },
-    { name: "Контакты", path: "/contacts" },
-  ]
-
-  const organizationItems = [
-    { name: "01. Основные сведения", path: "/osnovysveden" },
-    { name: "02. Структура и органы управления", path: "/structura" },
-    { name: "03. Документы", path: "/document" },
-    { name: "04. Образование", path: "/education" },
-    { name: "05. Образовательные стандарты", path: "/obrazstandart" },
-    { name: "06. Руководство и Педагогический состав", path: "/rukovodstvo" },
-    { name: "07. Материально-техническое обеспечение и оснащённость образовательного процесса", path: "/material" },
-    { name: "08. Стипендии и иные виды материальной поддержки", path: "/support" },
-    { name: "09. Платные образовательные услуги", path: "/plateducation" },
-    { name: "10. Финансово-хозяйственная деятельность", path: "/finplan" },
-    { name: "11. Вакантные места для приема (перевода)", path: "/perevod" },
-    { name: "12. Доступная среда", path: "/sreda" },
-    { name: "13. Международная деятельность", path: "/intern" },
+    { name: 'Информация', path: '/information' },
+    { name: 'Версия для слабовидящих', path: '/accessibility' },
+    { name: 'Контакты', path: '/contacts' },
   ]
 
   const educationItems = [
-    { name: "Судоводители ГИМС", path: "/sudovoditely" },
-    { name: "Парусные суда ГИМС", path: "/parusniesyda" },
-    { name: "Суда особой конструкции ГИМС", path: "/sudaosoboyconst" },
-    { name: "Коммерческие суда МИНТРАНС", path: "/commercsud" },
-    { name: "Прогулочные суда Минтранс", path: "/progulochnye" },
-    { name: "Яхтенный рулевой Минтранс", path: "/yachtrulevoy" },
-    { name: "Спасатели", path: "/spasately" },
-    { name: "Права на спецтехнику", path: "/pravaSpecTechnika" },
-    { name: "Обучение водолазов дайверов", path: "/vodolaz" },
+    { name: 'Судоводители ГИМС', path: '/sudovoditely' },
+    { name: 'Парусные суда', path: '/parusniesyda' },
+    { name: 'Суда особой конструкции', path: '/sudaosoboyconst' },
+    { name: 'Коммерческие суда', path: '/commercsud' },
+    { name: 'Прогулочные суда', path: '/progulochnye' },
+    { name: 'Яхтенный рулевой', path: '/yachtrulevoy' },
+    { name: 'Спасатели', path: '/spasately' },
+    { name: 'Права на спецтехнику', path: '/pravaSpecTechnika' },
+    { name: 'Водолазы', path: '/vodolaz' },
   ]
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const organizationItems = [
+    { name: '01. Основные сведения', path: '/osnovysveden' },
+    { name: '02. Структура и органы управления', path: '/structura' },
+    { name: '03. Документы', path: '/document' },
+    { name: '04. Образование', path: '/education' },
+    { name: '05. Образовательные стандарты', path: '/obrazstandart' },
+    { name: '06. Руководство и Педагогический состав', path: '/rukovodstvo' },
+    { name: '07. Материально-техническое обеспечение', path: '/material' },
+    { name: '08. Стипендии', path: '/support' },
+    { name: '09. Платные услуги', path: '/plateducation' },
+    { name: '10. Финансы', path: '/finplan' },
+    { name: '11. Вакантные места', path: '/perevod' },
+    { name: '12. Доступная среда', path: '/sreda' },
+    { name: '13. Международная деятельность', path: '/intern' },
+  ]
+
+  const baseMenuClass =
+    'flex-1 text-center px-4 py-2 rounded-md transition-colors duration-200 text-sm md:text-base font-medium'
+  const activeClass = 'bg-blue-100/60 text-blue-700'
+  const hoverClass = 'hover:bg-blue-100/40 hover:text-blue-700'
 
   return (
-    <header className={cn(
-      "fixed top-0 left-0 w-full z-50 py-4 transition-all duration-300",
-      isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white/90 backdrop-blur-sm"
-    )}>
-      <Container className="px-6 max-w-screen-2xl">
-        <div className="flex items-center justify-between">
-          {/* Логотип */}
-          <Link href="/public" className="flex items-center gap-4 group">
-            <div className="w-14 h-14 rounded-full border border-blue-600/30 group-hover:border-blue-600 transition-all flex items-center justify-center bg-gray-50">
-              <Image src="/logo-vosvod.png" alt="Логотип" width={56} height={56} className="rounded-full object-cover" priority />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm text-gray-700 whitespace-nowrap">АНО ДПО "Учебный центр"</span>
-              <span className="text-xl font-bold text-black uppercase tracking-tight">ВОСВОД</span>
-            </div>
-          </Link>
-
-          {/* Навигация */}
-          <nav className="flex items-center gap-6 relative z-50">
-            {/* Обучение */}
-            <div
-  className="relative"
-  onMouseEnter={() => setOpenMenu('education')}
-  onMouseLeave={() => setOpenMenu(null)}
->
-  <span className="text-base text-gray-700 hover:text-blue-700 cursor-pointer font-medium transition-colors">
-    Обучение
-  </span>
-  <AnimatePresence>
-    {openMenu === 'education' && (
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
-        className="absolute top-full left-0 mt-2 bg-white shadow-xl border rounded-2xl w-80 p-2 z-50"
-      >
-        {educationItems.map((item) => (
-          <button
-            key={item.path}
-            onClick={() => {
-              router.push(item.path)
-              setOpenMenu(null)
-            }}
-            className="w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50/80 transition-all rounded-lg text-sm"
+    <header
+      className={cn(
+        isFixed && 'fixed top-0 left-0',
+        'w-full z-[100] bg-white backdrop-blur-md border-b border-gray-200 transition-all',
+        isScrolled && 'shadow-md'
+      )}
+    >
+      <Container className="max-w-screen-2xl px-4">
+        {/* Desktop nav */}
+        <nav className="hidden md:flex flex-wrap justify-center items-center h-auto py-2 md:py-4 relative gap-2">
+          <div
+            onMouseEnter={() => setOpenMenu('education')}
+            onMouseLeave={() => setOpenMenu(null)}
+            className="relative flex-1 min-w-[140px] text-center"
           >
-            {item.name}
-          </button>
-        ))}
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
-
-            {/* Информация */}
-            <Link
-              href="/information"
+            <div
               className={cn(
-                "text-base font-medium text-gray-700 hover:text-blue-700",
-                pathname === "/information" && "text-blue-800"
+                baseMenuClass,
+                openMenu === 'education' || pathname.startsWith('/sudovoditely')
+                  ? activeClass
+                  : hoverClass
               )}
             >
-              Информация
-            </Link>
+              Обучение
+            </div>
+            <AnimatePresence>
+              {openMenu === 'education' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                >
+                  {educationItems.map((item) => (
+                    <button
+                      key={item.path}
+                      onClick={() => {
+                        router.push(item.path)
+                        setOpenMenu(null)
+                      }}
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-50 transition text-sm"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-            {/* Сведения */}
-            <div
-  className="relative"
-  onMouseEnter={() => setOpenMenu('organization')}
-  onMouseLeave={() => setOpenMenu(null)}
->
-  <span className="text-base text-gray-700 hover:text-blue-700 cursor-pointer font-medium transition-colors">
-    Сведения об организации
-  </span>
-  <AnimatePresence>
-    {openMenu === 'organization' && (
-      <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.2 }}
-        className="absolute top-full left-0 mt-2 bg-white shadow-xl border rounded-2xl w-96 p-2 z-50"
-      >
-        {organizationItems.map((item) => (
-          <button
-            key={item.path}
-            onClick={() => {
-              router.push(item.path)
-              setOpenMenu(null)
-            }}
-            className="w-full text-left px-4 py-2 text-gray-800 hover:bg-blue-50/80 transition-all rounded-lg text-sm"
+          <div
+            onMouseEnter={() => setOpenMenu('organization')}
+            onMouseLeave={() => setOpenMenu(null)}
+            className="relative flex-1 min-w-[140px] text-center"
           >
-            {item.name}
-          </button>
-        ))}
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
-            {/* Прочие пункты */}
-            {navItems.filter(i => i.path !== "/information").map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                className="text-base font-medium text-gray-700 hover:text-blue-700"
-              >
-                {item.name}
-              </Link>
-            ))}
-
-            {/* Личный кабинет */}
-            <Button
-              onClick={() => router.push('/cabinet')}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 h-10 text-base"
+            <div
+              className={cn(
+                baseMenuClass,
+                openMenu === 'organization' || pathname.startsWith('/osnovysveden')
+                  ? activeClass
+                  : hoverClass
+              )}
             >
-              Личный кабинет
-            </Button>
-          </nav>
+              Сведения об организации
+            </div>
+            <AnimatePresence>
+              {openMenu === 'organization' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                >
+                  {organizationItems.map((item) => (
+                    <button
+                      key={item.path}
+                      onClick={() => {
+                        router.push(item.path)
+                        setOpenMenu(null)
+                      }}
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-50 transition text-sm"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={cn(
+                baseMenuClass,
+                pathname === item.path ? activeClass : hoverClass,
+                'min-w-[140px]'
+              )}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Mobile nav */}
+        <div className="flex md:hidden items-center justify-between py-3">
+          <a
+            href="tel:+79319787378"
+            className="flex items-center gap-2 hover:underline font-medium"
+          >
+            <Phone className="w-5 h-5 text-blue-600" />
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm">+7 (931) 978-73-78</span>
+              <span className="text-[11px] text-blue-600">Заказать звонок</span>
+            </div>
+          </a>
+
+          <div className="flex items-center gap-1 text-gray-700 text-sm">
+  <MapPin className="w-4 h-4 text-blue-600" />
+  <div className="flex flex-col leading-tight">
+    <span>г. Санкт-Петербург, ул. Декабристов, д. 32/2</span>
+    <span className="text-[11px] text-gray-500">(Театральная площадь, д. 2)</span>
+  </div>
+</div>
+
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2">
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="flex flex-col gap-2 py-2 md:hidden overflow-hidden"
+            >
+              <MobileAccordion
+                label="Обучение"
+                items={educationItems}
+                onClick={() => setMobileOpen(false)}
+              />
+              <MobileAccordion
+                label="Сведения об организации"
+                items={organizationItems}
+                onClick={() => setMobileOpen(false)}
+              />
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  onClick={() => setMobileOpen(false)}
+                  className="px-4 py-2 text-sm hover:bg-blue-50 rounded-md transition"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Container>
     </header>
   )
