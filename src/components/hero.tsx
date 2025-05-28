@@ -29,17 +29,36 @@ export const Hero = () => {
   }, [])
 
   return (
-    <section className="w-full min-h-[700px] sm:min-h-[500px] lg:h-[82vh] flex flex-col lg:flex-row relative overflow-hidden bg-[#005bbb]/10">
-      {/* Стилизованные круги */}
-      <div className="absolute -top-32 -left-32 w-[300px] h-[300px] bg-[#005bbb] opacity-20 rounded-full blur-[100px] z-0" />
-      <div className="absolute top-1/2 left-12 w-[200px] h-[200px] bg-[#ffd500] opacity-20 rounded-full blur-[80px] z-0" />
+    <>
+      {/* Белая полоса сверху */}
+      <div className="w-full h-[60px] bg-white" />
 
-      {/* Левая часть */}
-      <div className="w-full lg:w-1/2 h-auto lg:h-full relative z-10">
-        <div className="w-full h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 md:px-12 lg:px-24 py-10 bg-white shadow-[0px_10px_60px_-15px_rgba(0,91,187,0.5)] relative z-10">
-          {/* Карточки */}
-          <div className="flex flex-wrap justify-center gap-4 mb-6 z-10">
-            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-blue-500/30 bg-white/20 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,91,187,0.2)] hover:shadow-[0_0_20px_rgba(0,91,187,0.5)] transition-shadow duration-300">
+      <section className="relative w-full h-[700px] lg:h-[82vh] overflow-hidden">
+        {/* Фоновое изображение на 2/3 ширины */}
+        <div className="absolute top-0 right-0 w-full lg:w-2/3 h-full z-0">
+          <Image
+            src={
+              typeof window === 'undefined' || window.innerWidth < 1024
+                ? content.images[0]
+                : content.images[currentImageIndex]
+            }
+            alt="Картинка курса"
+            fill
+            quality={100}
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+
+        {/* Бэкграунд-круги */}
+        <div className="absolute -top-32 -left-32 w-[300px] h-[300px] bg-[#005bbb] opacity-20 rounded-full blur-[100px] z-10" />
+        <div className="absolute top-1/2 left-12 w-[200px] h-[200px] bg-[#ffd500] opacity-20 rounded-full blur-[80px] z-10" />
+
+        {/* Левая панель с текстом, поверх фонового изображения */}
+        <div className="relative z-20 w-full lg:w-1/2 h-full flex flex-col justify-center items-center text-center px-6 sm:px-8 md:px-12 lg:px-20 bg-[#0072c5] text-white lg:rounded-br-[180px] backdrop-blur-md">
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-white/30 bg-white/10 backdrop-blur-lg shadow-[0_4px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-shadow duration-300">
               <Image
                 src="/регистр.png"
                 alt="регистр"
@@ -49,7 +68,7 @@ export const Hero = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-blue-500/30 bg-white/20 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,91,187,0.2)] hover:shadow-[0_0_20px_rgba(0,91,187,0.5)] transition-shadow duration-300">
+            <div className="w-28 h-16 sm:w-36 sm:h-20 md:w-44 md:h-24 rounded-2xl overflow-hidden border border-white/30 bg-white/10 backdrop-blur-lg shadow-[0_4px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-shadow duration-300">
               <Image
                 src="/image.png"
                 alt="эмблема"
@@ -61,10 +80,9 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Заголовок и текст */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4 z-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4">
             {content.title}{' '}
-            <span className="text-blue-600">
+            <span className="text-yellow-300">
               <FlipWords
                 words={content.words}
                 duration={2500}
@@ -72,40 +90,17 @@ export const Hero = () => {
               />
             </span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 mb-6 z-10">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-6">
             {content.description}
           </p>
           <a
-  href="tel:+79319787378"
-  className="mx-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-full w-fit transition z-10"
->
-  {content.buttonText}
-</a>
+            href="tel:+79319787378"
+            className="bg-white hover:bg-gray-100 text-[#0072c5] font-medium px-6 py-3 rounded-full transition"
+          >
+            {content.buttonText}
+          </a>
         </div>
-      </div>
-
-      {/* Правая часть — мобилка: статика, десктоп: простая смена картинки */}
-      <div className="block lg:hidden w-full h-[50vh] relative z-0">
-        <Image
-          src={content.images[0]}
-          alt="Изображение курса"
-          fill
-          quality={100}
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-      <div className="hidden lg:block w-full lg:w-1/2 h-full relative overflow-hidden z-0">
-        <Image
-          src={content.images[currentImageIndex]}
-          alt="Картинка курса"
-          fill
-          quality={100}
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
