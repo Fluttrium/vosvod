@@ -2,56 +2,47 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Container } from './ui/container'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Menu, X, ChevronDown, ChevronUp, Phone, MapPin } from 'lucide-react'
 
-const MobileAccordion = ({
-  label,
-  items,
-  onClick,
-}: {
-  label: string
-  items: { name: string; path: string }[]
-  onClick: () => void
-}) => {
-  const [open, setOpen] = useState(false)
+type MenuType = 'education' | 'organization' | null
 
-  return (
-    <div className="px-2">
-      <button
-        onClick={() => setOpen((prev) => !prev)}
-        className="w-full flex items-center justify-between text-sm font-medium py-2"
-      >
-        {label}
-        {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-      </button>
-      {open && (
-        <div className="flex flex-col gap-1 mt-1">
-          {items.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              onClick={onClick}
-              className="pl-4 pr-2 py-1 text-sm hover:bg-blue-50 rounded-md transition"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  )
+// Функция возвращает классы для кнопок с учётом лейбла и активного состояния
+const getButtonClasses = (label: string, isActive: boolean) => {
+  if (label === 'Обучение') {
+    return cn(
+      'text-white',
+      'transition-colors duration-200',
+      isActive
+        ? 'bg-yellow-400'
+        : 'bg-yellow-500 hover:bg-white hover:text-black' // фон при ховере белый, текст чёрный
+    )
+  }
+
+  if (
+    label === 'Контакты' ||
+    label === 'Организация' ||
+    label === 'Информация' ||
+    label === 'Версия для слабовидящих'
+  ) {
+    return cn(
+      'text-white',
+      'transition-colors duration-200',
+      isActive
+        ? 'bg-white text-black' // активный белый фон и тёмный текст
+        : 'bg-blue-700 hover:bg-white hover:text-black' // при ховере фон белый, текст чёрный
+    )
+  }
+
+  return ''
 }
 
 export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const pathname = usePathname()
   const router = useRouter()
-  const [openMenu, setOpenMenu] = useState<'education' | 'organization' | null>(null)
+  const [openMenu, setOpenMenu] = useState<MenuType>(null)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10)
@@ -92,9 +83,10 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   ]
 
   const baseMenuClass =
-    'flex-1 text-center px-4 py-2 rounded-md transition-colors duration-200 text-sm md:text-base font-medium'
-  const activeClass = 'bg-blue-100/60 text-blue-700'
-  const hoverClass = 'hover:bg-blue-100/40 hover:text-blue-700'
+    'flex-1 text-center px-0 py-8 rounded-none transition-colors duration-200 text-sm md:text-base font-medium cursor-pointer select-none'
+
+  // Функция для определения активного пункта меню
+  const isActivePath = (path: string) => pathname === path || pathname.startsWith(path)
 
   return (
     <header
@@ -104,20 +96,22 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
         isScrolled && 'shadow-md'
       )}
     >
-      <Container className="max-w-screen-2xl px-4">
+      <div className="w-full px-0">
         {/* Desktop nav */}
-        <nav className="hidden md:flex flex-wrap justify-center items-center h-auto py-2 md:py-4 relative gap-2">
+        <nav className="hidden md:flex p-0 flex-wrap justify-center items-center h-auto relative">
+          {/* Обучение с выпадающим меню */}
           <div
             onMouseEnter={() => setOpenMenu('education')}
             onMouseLeave={() => setOpenMenu(null)}
-            className="relative flex-1 min-w-[140px] text-center"
+            className="relative flex-1 min-w-[140px]"
           >
             <div
               className={cn(
                 baseMenuClass,
-                openMenu === 'education' || pathname.startsWith('/sudovoditely')
-                  ? activeClass
-                  : hoverClass
+                getButtonClasses(
+                  'Обучение',
+                  openMenu === 'education' || pathname.startsWith('/sudovoditely')
+                )
               )}
             >
               Обучение
@@ -138,7 +132,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                         router.push(item.path)
                         setOpenMenu(null)
                       }}
-                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-50 transition text-sm"
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-white hover:text-black transition text-sm"
                     >
                       {item.name}
                     </button>
@@ -148,20 +142,22 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
             </AnimatePresence>
           </div>
 
+          {/* Организация с выпадающим меню */}
           <div
             onMouseEnter={() => setOpenMenu('organization')}
             onMouseLeave={() => setOpenMenu(null)}
-            className="relative flex-1 min-w-[140px] text-center"
+            className="relative flex-1 min-w-[140px]"
           >
             <div
               className={cn(
                 baseMenuClass,
-                openMenu === 'organization' || pathname.startsWith('/osnovysveden')
-                  ? activeClass
-                  : hoverClass
+                getButtonClasses(
+                  'Организация',
+                  openMenu === 'organization' || pathname.startsWith('/osnovysveden')
+                )
               )}
             >
-              Сведения об организации
+              Организация
             </div>
             <AnimatePresence>
               {openMenu === 'organization' && (
@@ -170,7 +166,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
                 >
                   {organizationItems.map((item) => (
                     <button
@@ -179,7 +175,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                         router.push(item.path)
                         setOpenMenu(null)
                       }}
-                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-blue-50 transition text-sm"
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-white hover:text-black transition text-sm"
                     >
                       {item.name}
                     </button>
@@ -189,80 +185,34 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
             </AnimatePresence>
           </div>
 
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={cn(
-                baseMenuClass,
-                pathname === item.path ? activeClass : hoverClass,
-                'min-w-[140px]'
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {/* Другие пункты меню */}
+          {navItems.map((item) => {
+            const isActive = isActivePath(item.path)
+            const isBlueBtn =
+              item.name === 'Контакты' ||
+              item.name === 'Организация' ||
+              item.name === 'Информация' ||
+              item.name === 'Версия для слабовидящих'
+
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={cn(
+                  baseMenuClass,
+                  isActive
+                    ? (isBlueBtn ? 'bg-white text-black' : 'bg-yellow-400 text-white')
+                    : (isBlueBtn
+                        ? 'bg-blue-700 text-white hover:bg-white hover:text-black'
+                        : 'bg-yellow-500 text-white hover:bg-white hover:text-black')
+                )}
+              >
+                {item.name}
+              </Link>
+            )
+          })}
         </nav>
-
-        {/* Mobile nav */}
-        <div className="flex md:hidden items-center justify-between py-3">
-          <a
-            href="tel:+79319787378"
-            className="flex items-center gap-2 hover:underline font-medium"
-          >
-            <Phone className="w-5 h-5 text-blue-600" />
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm">+7 (931) 978-73-78</span>
-              <span className="text-[11px] text-blue-600">Заказать звонок</span>
-            </div>
-          </a>
-
-          <div className="flex items-center gap-1 text-gray-700 text-sm">
-  <MapPin className="w-4 h-4 text-blue-600" />
-  <div className="flex flex-col leading-tight">
-    <span>г. Санкт-Петербург, ул. Декабристов, д. 32/2</span>
-    <span className="text-[11px] text-gray-500">(Театральная площадь, д. 2)</span>
-  </div>
-</div>
-
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2">
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="flex flex-col gap-2 py-2 md:hidden overflow-hidden"
-            >
-              <MobileAccordion
-                label="Обучение"
-                items={educationItems}
-                onClick={() => setMobileOpen(false)}
-              />
-              <MobileAccordion
-                label="Сведения об организации"
-                items={organizationItems}
-                onClick={() => setMobileOpen(false)}
-              />
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-4 py-2 text-sm hover:bg-blue-50 rounded-md transition"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Container>
+      </div>
     </header>
   )
 }
