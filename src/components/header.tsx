@@ -8,35 +8,34 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 type MenuType = 'education' | 'organization' | null
 
-// Функция возвращает классы для кнопок с учётом лейбла и активного состояния
 const getButtonClasses = (label: string, isActive: boolean) => {
   if (label === 'Обучение') {
-  return cn(
-  'text-white',
-  'transition-colors duration-200',
-  isActive
-  ? 'bg-white text-blue-500' // активный — фон белый, текст синий
-  : 'bg-yellow-500 hover:bg-white hover:text-blue-500' // ховер — фон белый, текст синий
-  )
+    return cn(
+      'text-white',
+      'transition-colors duration-200',
+      isActive
+        ? 'bg-white text-blue-700'
+        : 'bg-yellow-500 hover:bg-white hover:text-blue-700'
+    )
   }
-  
+
   if (
-  label === 'Контакты' ||
-  label === 'Организация' ||
-  label === 'Информация' ||
-  label === 'Версия для слабовидящих'
+    label === 'Контакты' ||
+    label === 'Организация' ||
+    label === 'Информация' ||
+    label === 'Версия для слабовидящих'
   ) {
-  return cn(
-  'text-white',
-  'transition-colors duration-200',
-  isActive
-  ? 'bg-white text-blue-500'
-  : 'bg-blue-700 hover:bg-white hover:text-blue-500'
-  )
+    return cn(
+      'text-white',
+      'transition-colors duration-200',
+      isActive
+        ? 'bg-white text-blue-700'
+        : 'bg-blue-700 hover:bg-white hover:text-blue-700'
+    )
   }
-  
+
   return ''
-  }
+}
 
 export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const pathname = usePathname()
@@ -63,7 +62,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
     { name: 'Коммерческие суда', path: '/commercsud' },
     { name: 'Прогулочные суда', path: '/progulochnye' },
     { name: 'Спасатели', path: '/spasately' },
-    { name: 'Обучение водолазов, дайверов ', path: '/vodolaz' },
+    { name: 'Обучение водолазов, дайверов', path: '/vodolaz' },
   ]
 
   const organizationItems = [
@@ -85,9 +84,6 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const baseMenuClass =
     'flex-1 text-center px-0 py-8 rounded-none transition-colors duration-200 text-sm md:text-lg font-medium cursor-pointer select-none'
 
-  // Функция для определения активного пункта меню
-  const isActivePath = (path: string) => pathname === path || pathname.startsWith(path)
-
   return (
     <header
       className={cn(
@@ -97,25 +93,36 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
       )}
     >
       <div className="w-full px-0">
-        {/* Desktop nav */}
         <nav className="hidden md:flex p-0 flex-wrap justify-center items-center h-auto relative">
-          {/* Обучение с выпадающим меню */}
+          {/* Обучение */}
           <div
-            onMouseEnter={() => setOpenMenu('education')}
-            onMouseLeave={() => setOpenMenu(null)}
-            className="relative flex-1 min-w-[140px]"
-          >
-            <div
-              className={cn(
-                baseMenuClass,
-                getButtonClasses(
-                  'Обучение',
-                  openMenu === 'education' || pathname.startsWith('/sudovoditely')
-                )
-              )}
-            >
-              Обучение
-            </div>
+  onMouseEnter={() => setOpenMenu('education')}
+  onMouseLeave={() => setOpenMenu(null)}
+  className="relative flex-1 min-w-[140px] flex items-center justify-center"
+>
+  <div
+    className={cn(
+      baseMenuClass,
+      'flex items-center justify-center gap-2', // иконка + текст
+      getButtonClasses(
+        'Обучение',
+        openMenu === 'education' || pathname.startsWith('/sudovoditely')
+      )
+    )}
+  >
+    {/* Иконка бургер-меню */}
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-5 h-5 text-white group-hover:text-blue-700 transition-colors duration-200"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+    <span>Обучение</span>
+  </div>
             <AnimatePresence>
               {openMenu === 'education' && (
                 <motion.div
@@ -123,7 +130,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-none shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
                 >
                   {educationItems.map((item) => (
                     <button
@@ -132,7 +139,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                         router.push(item.path)
                         setOpenMenu(null)
                       }}
-                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-white hover:text-black transition text-sm"
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100 transition text-lg"
                     >
                       {item.name}
                     </button>
@@ -142,7 +149,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
             </AnimatePresence>
           </div>
 
-          {/* Организация с выпадающим меню */}
+          {/* Организация */}
           <div
             onMouseEnter={() => setOpenMenu('organization')}
             onMouseLeave={() => setOpenMenu(null)}
@@ -166,7 +173,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-none shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
                 >
                   {organizationItems.map((item) => (
                     <button
@@ -175,7 +182,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                         router.push(item.path)
                         setOpenMenu(null)
                       }}
-                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-white hover:text-black transition text-sm"
+                      className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100 transition text-lg"
                     >
                       {item.name}
                     </button>
@@ -185,32 +192,21 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
             </AnimatePresence>
           </div>
 
-          {/* Другие пункты меню */}
-          {navItems.map((item) => {
-            const isActive = isActivePath(item.path)
-            const isBlueBtn =
-              item.name === 'Контакты' ||
-              item.name === 'Организация' ||
-              item.name === 'Информация' ||
-              item.name === 'Версия для слабовидящих'
-
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={cn(
-                  baseMenuClass,
-                  isActive
-                    ? (isBlueBtn ? 'bg-white text-blue-500' : 'bg-yellow-400 text-blue-500')
-                    : (isBlueBtn
-                        ? 'bg-blue-700 text-white hover:bg-white hover:text-blue-500'
-                        : 'bg-yellow-500 text-blue hover:bg-white hover:text-blue-500')
-                )}
-              >
-                {item.name}
+          {/* Остальные элементы */}
+          {navItems.map((item) => (
+            <div key={item.path} className="flex-1 min-w-[140px]">
+              <Link href={item.path}>
+                <div
+                  className={cn(
+                    baseMenuClass,
+                    getButtonClasses(item.name, pathname === item.path)
+                  )}
+                >
+                  {item.name}
+                </div>
               </Link>
-            )
-          })}
+            </div>
+          ))}
         </nav>
       </div>
     </header>
