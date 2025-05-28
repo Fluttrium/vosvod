@@ -11,32 +11,32 @@ type MenuType = 'education' | 'organization' | null
 // Функция возвращает классы для кнопок с учётом лейбла и активного состояния
 const getButtonClasses = (label: string, isActive: boolean) => {
   if (label === 'Обучение') {
-    return cn(
-      'text-white',
-      'transition-colors duration-200',
-      isActive
-        ? 'bg-yellow-400'
-        : 'bg-yellow-500 hover:bg-white hover:text-black' // фон при ховере белый, текст чёрный
-    )
+  return cn(
+  'text-white',
+  'transition-colors duration-200',
+  isActive
+  ? 'bg-white text-blue-500' // активный — фон белый, текст синий
+  : 'bg-yellow-500 hover:bg-white hover:text-blue-500' // ховер — фон белый, текст синий
+  )
   }
-
+  
   if (
-    label === 'Контакты' ||
-    label === 'Организация' ||
-    label === 'Информация' ||
-    label === 'Версия для слабовидящих'
+  label === 'Контакты' ||
+  label === 'Организация' ||
+  label === 'Информация' ||
+  label === 'Версия для слабовидящих'
   ) {
-    return cn(
-      'text-white',
-      'transition-colors duration-200',
-      isActive
-        ? 'bg-white text-black' // активный белый фон и тёмный текст
-        : 'bg-blue-700 hover:bg-white hover:text-black' // при ховере фон белый, текст чёрный
-    )
+  return cn(
+  'text-white',
+  'transition-colors duration-200',
+  isActive
+  ? 'bg-white text-blue-500'
+  : 'bg-blue-700 hover:bg-white hover:text-blue-500'
+  )
   }
-
+  
   return ''
-}
+  }
 
 export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const pathname = usePathname()
@@ -83,7 +83,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   ]
 
   const baseMenuClass =
-    'flex-1 text-center px-0 py-8 rounded-none transition-colors duration-200 text-sm md:text-base font-medium cursor-pointer select-none'
+    'flex-1 text-center px-0 py-8 rounded-none transition-colors duration-200 text-sm md:text-lg font-medium cursor-pointer select-none'
 
   // Функция для определения активного пункта меню
   const isActivePath = (path: string) => pathname === path || pathname.startsWith(path)
@@ -201,10 +201,10 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                 className={cn(
                   baseMenuClass,
                   isActive
-                    ? (isBlueBtn ? 'bg-white text-black' : 'bg-yellow-400 text-white')
+                    ? (isBlueBtn ? 'bg-white text-blue-500' : 'bg-yellow-400 text-blue-500')
                     : (isBlueBtn
-                        ? 'bg-blue-700 text-white hover:bg-white hover:text-black'
-                        : 'bg-yellow-500 text-white hover:bg-white hover:text-black')
+                        ? 'bg-blue-700 text-white hover:bg-white hover:text-blue-500'
+                        : 'bg-yellow-500 text-blue hover:bg-white hover:text-blue-500')
                 )}
               >
                 {item.name}
