@@ -10,7 +10,7 @@ import BridgeTeamRescuers from "@/components/ui/rescuelist"
 export default function Home() {
     return (
         <>
-            <main className="w-screen h-full">
+            <main className="w-screen h-full bg-white">
                 <Hero/>
                 <ThreeDCardDemo/>
                 <VOSVODCards/>

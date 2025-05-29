@@ -86,12 +86,13 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
 
   return (
     <header
-      className={cn(
-        isFixed && 'fixed top-0 left-0',
-        'w-full z-[100] bg-white backdrop-blur-md border-b border-gray-200 transition-all',
-        isScrolled && 'shadow-md'
-      )}
-    >
+  className={cn(
+    isFixed && 'fixed top-0 left-0',
+    'w-full z-[100] bg-white backdrop-blur-md border-b border-gray-200 transition-all',
+    isScrolled && 'shadow-md',
+    'h-auto' // или 'min-h-[70px]' — проверь, чтобы не было пустого пространства
+  )}
+>
       <div className="w-full px-0">
         <nav className="hidden md:flex p-0 flex-wrap justify-center items-center h-auto relative">
           {/* Обучение */}

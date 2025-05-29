@@ -53,13 +53,13 @@ export const Header2 = () => {
           </div>
 
           {/* Телефон */}
-          <a href="tel:+79319787378" className="flex items-center gap-2 hover:underline font-medium">
-            <Phone className="w-5 h-5 text-blue-600" />
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm">+7 (931) 978-73-78</span>
-              <span className="text-[11px] text-blue-600">Заказать звонок</span>
-            </div>
-          </a>
+          <a href="tel:+79319787378" className="flex items-center gap-3 hover:underline font-medium">
+  <Phone className="w-7 h-7 text-blue-600" />
+  <div className="flex flex-col leading-tight">
+    <span className="text-lg">+7 (931) 978-73-78</span>
+    <span className="text-sm text-blue-600">Заказать звонок</span>
+  </div>
+</a>
         </div>
 
         {/* Кнопка — Личный кабинет для десктопа */}
