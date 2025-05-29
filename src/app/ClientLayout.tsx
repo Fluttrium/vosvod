@@ -24,14 +24,14 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
 
         {/* Фиксированная двойная шапка */}
         {!isTest && (
-          <div className="fixed top-0 left-0 w-full z-50">
+          <div className="top-0 left-0 w-full z-50">
             <Header2 />
             <Header isFixed={false} />
           </div>
         )}
 
         {/* Контент под шапкой (учтён отступ вниз под оба хедера) */}
-        <main className="relative pt-[180px]">
+        <main className="relative">
           {children}
         </main>
 

@@ -7,9 +7,9 @@ import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 export function ThreeDCardDemo() {
   const cardsData = [
     {
-      title: "Права на спецтехнику МИНТРАНС",
+      title: "Судоводитель ГИМС",
       description:
-        "Учебные группы не более 10 человек, что позволяет создать индивидуальный подход к каждому курсанту.",
+        "Обучение на категории судов поднадзорных ГИМС: Моторное судно, гидроцикл. Районы плавания:МП,ВВП,ВВ",
       imageUrl: "1-768x576.jpg",
       link: "/sudovoditely",
     },
