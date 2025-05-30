@@ -37,45 +37,27 @@ const Footer = () => {
               <div className="flex items-start gap-2">
                 <PhoneIcon className="w-5 h-5 mt-1 text-blue-600" />
                 <div>
-                  <p className="font-medium text-blue-900">+7 (931) 978-73-78</p>
-                  <p className="text-sm text-blue-600">Пн-Сб с 10:00 до 19:00</p>
+                  <p className="font-medium text-blue-900">+7-931-978-73-78</p>
+                  <p className="font-medium text-blue-900">8(812)944-46-49</p>
                 </div>
               </div>
               <div className="flex items-start gap-2">
                 <EnvelopeIcon className="w-5 h-5 mt-1 text-blue-600" />
-                <a href="mailto:vosvod@mail.ru" className="text-blue-600 hover:text-blue-800">
-                  vosvod@mail.ru
+                <a href="mailto:vosvodcenter@mail.ru" className="text-blue-600 hover:text-blue-800">
+                  vosvodcenter@mail.ru
                 </a>
-              </div>
-              <div className="flex items-start gap-2">
-                <CalendarIcon className="w-5 h-5 mt-1 text-blue-600" />
-                <p className="text-sm text-blue-600">
-                  Прием документов по предварительной записи
-                </p>
               </div>
             </div>
           </div>
 
           {/* Документация */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-blue-900">Документы</h4>
+            <h4 className="text-lg font-semibold text-blue-900">День открытых дверей и выдача документов <br/>
+            Каждую субботу с 12:00 - 15:00</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/payment-rules" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
-                  <DocumentTextIcon className="w-5 h-5" />
-                  Правила оплаты
-                </Link>
-              </li>
-              <li>
-                <Link href="/license" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
-                  <DocumentTextIcon className="w-5 h-5" />
-                  Образовательная лицензия
-                </Link>
-              </li>
-              <li>
-                <Link href="/payment-systems" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
-                  <CreditCardIcon className="w-5 h-5" />
-                  Платежные системы
+                  Образовательная лицензия №Л035-01271-78/00176691 от 28.01.2022 года
                 </Link>
               </li>
             </ul>
@@ -83,47 +65,14 @@ const Footer = () => {
 
           {/* Обучение */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-blue-900">Обучение</h4>
+            <h4 className="text-lg font-semibold text-blue-900">АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ ДОПОЛНИТЕЛЬНОГО ПРОФЕССИОНПЛЬНОГО ОБРАЗОВАНИЯ "УЧЕБНЫЙ ЦЕНТР СУДОВОЖДНИЯ"</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/courses" className="text-blue-600 hover:text-blue-800">
-                  Курсы первой помощи
-                </Link>
-              </li>
-              <li>
-                <Link href="/certification" className="text-blue-600 hover:text-blue-800">
-                  Сертификация
-                </Link>
-              </li>
-              <li>
-                <Link href="/schedule" className="text-blue-600 hover:text-blue-800">
-                  Расписание занятий
-                </Link>
+                ИНН\КПП 7838099880\783801001
               </li>
             </ul>
           </div>
-
-          {/* Полезные ссылки */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-blue-900">Ссылки</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/about" className="text-blue-600 hover:text-blue-800">
-                  О нас
-                </Link>
-              </li>
-              <li>
-                <Link href="/news" className="text-blue-600 hover:text-blue-800">
-                  Новости
-                </Link>
-              </li>
-              <li>
-                <Link href="/contacts" className="text-blue-600 hover:text-blue-800">
-                  Контакты
-                </Link>
-              </li>
-            </ul>
-          </div>
+          
         </div>
 
         {/* Нижняя часть */}

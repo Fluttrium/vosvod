@@ -9,11 +9,11 @@ export function VOSVODCards() {
 
   const iconsData = [
     { title: "20 лет опыта", icon: <Award className="w-8 h-8 text-blue-600" /> },
-    { title: "95% с первого раза", icon: <ListChecks className="w-8 h-8 text-blue-600" /> },
-    { title: "24/7 поддержка", icon: <Clock className="w-8 h-8 text-blue-600" /> },
-    { title: "Профессионалы", icon: <Users className="w-8 h-8 text-blue-600" /> },
-    { title: "Современные пособия", icon: <BookOpen className="w-8 h-8 text-blue-600" /> },
-    { title: "Все виды обучения", icon: <LifeBuoy className="w-8 h-8 text-blue-600" /> },
+    { title: "Предоставляем свои суда на государственный экзамен", icon: <ListChecks className="w-8 h-8 text-blue-600" /> },
+    { title: "24/7 личный кабинет", icon: <Clock className="w-8 h-8 text-blue-600" /> },
+    { title: "Лекции в очно и дистанционных форматах", icon: <Users className="w-8 h-8 text-blue-600" /> },
+    { title: "Сопровождение до получения удостоверения", icon: <BookOpen className="w-8 h-8 text-blue-600" /> },
+    { title: "Современные тренажеры", icon: <LifeBuoy className="w-8 h-8 text-blue-600" /> },
   ];
 
   return (
