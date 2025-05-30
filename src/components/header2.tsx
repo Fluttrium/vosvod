@@ -27,8 +27,8 @@ export const Header2 = () => {
     />
   </div>
   <div className="flex flex-col leading-tight">
-    <span className="text-xs sm:text-lg text-gray-700">АНО ДПО "Учебный центр Судовождения"</span>
-    <span className="text-sm sm:text-2xl font-bold text-black uppercase tracking-tight">Учебный центр ВОСВОД</span>
+    <span className="text-xs sm:text-2xl text-black-700 font-bold">АНО ДПО <br/> "Учебный центр Судовождения"</span>
+    <span className="text-sm sm:text-lg text-black uppercase tracking-tight">Учебный центр ВОСВОД</span>
   </div>
 </Link>
           <div className="sm:hidden">
