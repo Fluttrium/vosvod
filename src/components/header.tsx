@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
 
 type MenuType = 'education' | 'organization' | null
 
@@ -42,6 +43,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
   const router = useRouter()
   const [openMenu, setOpenMenu] = useState<MenuType>(null)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10)
@@ -86,44 +88,43 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
 
   return (
     <header
-  className={cn(
-    isFixed && 'fixed top-0 left-0',
-    'w-full z-[100] bg-white backdrop-blur-md border-b border-gray-200 transition-all',
-    isScrolled && 'shadow-md',
-    'h-auto' // или 'min-h-[70px]' — проверь, чтобы не было пустого пространства
-  )}
->
-      <div className="w-full px-0">
-        <nav className="hidden md:flex p-0 flex-wrap justify-center items-center h-auto relative">
+      className={cn(
+        isFixed && 'fixed top-0 left-0',
+        'w-full z-[100] bg-white backdrop-blur-md border-b border-gray-200 transition-all',
+        isScrolled && 'shadow-md'
+      )}
+    >
+      <div className="w-full px-4 md:px-0">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex flex-wrap justify-center items-center h-auto relative">
           {/* Обучение */}
           <div
-  onMouseEnter={() => setOpenMenu('education')}
-  onMouseLeave={() => setOpenMenu(null)}
-  className="relative flex-1 min-w-[140px] flex items-center justify-center"
->
-  <div
-    className={cn(
-      baseMenuClass,
-      'flex items-center justify-center gap-2', // иконка + текст
-      getButtonClasses(
-        'Обучение',
-        openMenu === 'education' || pathname.startsWith('/sudovoditely')
-      )
-    )}
-  >
-    {/* Иконка бургер-меню */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5 text-white group-hover:text-blue-700 transition-colors duration-200"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-    <span>Обучение</span>
-  </div>
+            onMouseEnter={() => setOpenMenu('education')}
+            onMouseLeave={() => setOpenMenu(null)}
+            className="relative flex-1 min-w-[140px] flex items-center justify-center"
+          >
+            <div
+              className={cn(
+                baseMenuClass,
+                'flex items-center justify-center gap-2',
+                getButtonClasses(
+                  'Обучение',
+                  openMenu === 'education' || pathname.startsWith('/sudovoditely')
+                )
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-white group-hover:text-blue-700 transition-colors duration-200"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <span>Обучение</span>
+            </div>
             <AnimatePresence>
               {openMenu === 'education' && (
                 <motion.div
@@ -131,7 +132,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-none shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white shadow-2xl border z-[999] max-h-[75vh] overflow-y-auto"
                 >
                   {educationItems.map((item) => (
                     <button
@@ -174,7 +175,7 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-none shadow-2xl border border-gray-200 z-[999] max-h-[75vh] overflow-y-auto"
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white shadow-2xl border z-[999] max-h-[75vh] overflow-y-auto"
                 >
                   {organizationItems.map((item) => (
                     <button
@@ -209,6 +210,55 @@ export const Header = ({ isFixed = true }: { isFixed?: boolean }) => {
             </div>
           ))}
         </nav>
+
+        {/* Mobile Nav */}
+        <div className="flex md:hidden items-center justify-between p-4">
+          <span className="font-bold text-lg">Меню</span>
+          <button onClick={() => setMobileMenuOpen((prev) => !prev)}>
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden md:hidden bg-white border-t border-gray-200"
+            >
+              <div className="flex flex-col gap-2 px-4 py-2">
+                <details>
+                  <summary className="cursor-pointer font-semibold py-2">Обучение</summary>
+                  <div className="pl-4 flex flex-col gap-1">
+                    {educationItems.map((item) => (
+                      <Link key={item.path} href={item.path} onClick={() => setMobileMenuOpen(false)}>
+                        <span className="text-blue-700 hover:underline">{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+
+                <details>
+                  <summary className="cursor-pointer font-semibold py-2">Организация</summary>
+                  <div className="pl-4 flex flex-col gap-1">
+                    {organizationItems.map((item) => (
+                      <Link key={item.path} href={item.path} onClick={() => setMobileMenuOpen(false)}>
+                        <span className="text-blue-700 hover:underline">{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+
+                {navItems.map((item) => (
+                  <Link key={item.path} href={item.path} onClick={() => setMobileMenuOpen(false)}>
+                    <span className="py-2 text-blue-700 hover:underline">{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   )
